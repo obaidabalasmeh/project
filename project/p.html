@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+ 
+</head>
+<body>
+
+  
+<!-- Date and Time -->
+<div>
+  <p>Current Date and Time: <span id="datetime"></span></p>
+</div>
+
+<!-- Form Section -->
+<section  >
+  <h1>Contact Us</h1>
+  <form onsubmit="return validateForm()">
+    <!-- Name and Contact Information -->
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="contact">Contact Information:</label>
+    <input type="text" id="contact" name="contact" required><br>
+
+    <!-- Numerical Input Fields -->
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required><br>
+
+    <!-- Radio Buttons for Gender -->
+    <p>Gender:</p>
+    <label><input type="radio" name="gender" value="male"> Male</label>
+    <label><input type="radio" name="gender" value="female"> Female</label><br>
+
+    
+
+    <!-- Radio Buttons for Interests -->
+    <p>After you read about the situation, what do you support?</p>
+    <label><input type="radio" name="interests" value="palestine"> Palestine</label>
+    <label><input type="radio" name="interests" value="israel"> Israel</label><br>
+
+    <!-- Textarea -->
+    <label for="comments">Comments:</label><br>
+    <textarea id="comments" name="comments" rows="4" cols="50"></textarea><br>
+
+    <!-- Submit Button -->
+    <input type="submit" value="Submit">
+  </form>
+
+  <!-- Error Messages -->
+  <div id="errorMessages"></div>
+
+  <!-- Report Display -->
+  <div>
+    <h3>Report</h3>
+    <textarea id="report" rows="6" cols="50" readonly></textarea>
+  </div>
+</section>
+
+<!-- JavaScript Validation and Date/Time -->
+<script>
+  function validateForm() {
+    // Clear previous error messages
+    clearErrors();
+
+    // Validate Name
+    var name = document.getElementById('name').value;
+    if (name === '') {
+      displayError('Name cannot be empty');
+      return false;
+    }
+
+    // Validate Contact Information
+    var contact = document.getElementById('contact').value;
+    if (contact === '') {
+      displayError('Contact Information cannot be empty');
+      return false;
+    }
+
+    // Validate Age
+    var age = document.getElementById('age').value;
+    if (age < 0 || age > 120) {
+      displayError('Age must be between 0 and 120');
+      return false;
+    }
+
+    // Validate at least one radio button is selected for gender
+    var genderSelected = false;
+    var genderElements = document.getElementsByName('gender');
+    for (var i = 0; i < genderElements.length; i++) {
+      if (genderElements[i].checked) {
+        genderSelected = true;
+        break;
+      }
+    }
+
+    if (!genderSelected) {
+      displayError('Please select a gender');
+      return false;
+    }
+
+    // Validate at least one radio button is selected for interests
+    var interestsSelected = false;
+    var interestsElements = document.getElementsByName('interests');
+    for (var i = 0; i < interestsElements.length; i++) {
+      if (interestsElements[i].checked) {
+        interestsSelected = true;
+        break;
+      }
+    }
+
+    if (!interestsSelected) {
+      displayError('Please select an interest');
+      return false;
+    }
+
+    // If validation passes, perform calculations and update the report textarea
+    updateReport();
+
+    // Return false to prevent the form from submitting
+    return false;
+  }
+
+  function displayError(message) {
+    var errorMessages = document.getElementById('errorMessages');
+    var errorMessage = document.createElement('p');
+    errorMessage.textContent = message;
+    errorMessages.appendChild(errorMessage);
+  }
+
+  function clearErrors() {
+    var errorMessages = document.getElementById('errorMessages');
+    errorMessages.innerHTML = '';
+  }
+
+  function updateReport() {
+    // Get form values
+    var name = document.getElementById('name').value;
+    var contact = document.getElementById('contact').value;
+    var age = document.getElementById('age').value;
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+    var interests = document.querySelector('input[name="interests"]:checked').value;
+    var comments = document.getElementById('comments').value;
+
+    // Append additional message based on interests
+    if (interests === 'israel') {
+      comments += '\nShame on you!';
+    }
+
+    // Update the report textarea
+    var report = document.getElementById('report');
+    report.value = `
+      Name: ${name}
+      Contact Information: ${contact}
+      Age: ${age}
+      Gender: ${gender}
+      support: ${interests}
+      Comments: ${comments}
+    `;
+  }
+
+  // Update date and time
+  function updateDateTime() {
+    var now = new Date();
+    var datetimeElement = document.getElementById('datetime');
+    datetimeElement.innerHTML = now.toLocaleString();
+  }
+
+  // Update date and time on page load
+  updateDateTime();
+
+  // Set interval to update date and time every second
+  setInterval(updateDateTime, 1000);
+</script>
+
+<div style= "text-align: center;" >
+  <h1><a href="project.html"> HOME</a></h1>
+  <h1><a href="donate.html">donate</a></h1>
+  <h1><a href="end.html">prev</a></h1>
+
+</div>
+
+
+</body>
+</html>
